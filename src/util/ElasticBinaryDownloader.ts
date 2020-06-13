@@ -2,8 +2,11 @@ import fs from 'fs';
 import url from 'url';
 import https from 'https';
 import path from 'path';
+import tar from 'tar-stream';
+import { createUnzip } from 'zlib';
 import dedent from 'dedent';
 import { promisify } from 'util';
+import { locationExists } from './functions';
 // import { HttpsProxyAgent } from 'https-proxy-agent';
 
 interface HttpDownloadOptions {
@@ -177,7 +180,98 @@ export default class ElasticBinaryDownloader {
     return downloadedFile;
   }
 
-  async extract(archive: string): Promise<string> {
-    return 'placeholder';
+  /**
+   * Extract given Archive
+   * @param elasticArchive Archive location
+   * @returns extracted directory location
+   */
+  async extract(elasticArchive: string): Promise<string> {
+    const binaryName = 'elasticsearch';
+    const extractDir = path.resolve(this.downloadDir, this.version);
+
+    if (!fs.existsSync(extractDir)) {
+      fs.mkdirSync(extractDir);
+    }
+
+    // TODO: Fix the filter
+    let filter: (file: string) => boolean;
+    filter = (file: string) => /bin\/elasticsearch$/.test(file);
+
+    // TODO: Fix checking of multipart .tar.gz extensions
+    if (/(.gz|.tgz)$/.test(path.extname(elasticArchive))) {
+      await this.extractTarGz(elasticArchive, extractDir, filter);
+    } else {
+      throw new Error(
+        `ElasticBinaryDownload: unsupported archive ext ${path.extname(
+          elasticArchive
+        )} (downloaded from ${
+          this._downloadingUrl ?? 'unkown'
+        }). Broken archive from elasticsearch provider?`
+      );
+    }
+
+    if (
+      !(await locationExists(
+        path.resolve(this.downloadDir, this.version, 'bin', binaryName)
+      ))
+    ) {
+      throw new Error(
+        `ElasticBinaryDownload: missing mongod binary in ${path.resolve(
+          this.downloadDir,
+          this.version,
+          binaryName
+        )} (downloaded from ${
+          this._downloadingUrl ?? 'unkown'
+        }). Broken archive from elasticsearch Provider?`
+      );
+    }
+    return extractDir;
+  }
+
+  /**
+   * Extract a .tar.gz archive
+   * @param elasticDBArchive Archive location
+   * @param extractDir Directory to extract to
+   * @param filter Method to determine which files to extract
+   */
+  async extractTarGz(
+    elasticArchive: string,
+    extractDir: string,
+    filter: (file: string) => boolean
+  ): Promise<void> {
+    const extract = tar.extract();
+    extract.on('entry', (header, stream, next) => {
+      if (filter(header.name)) {
+        console.log(header.name);
+        stream.pipe(
+          fs.createWriteStream(
+            path.resolve(extractDir, path.basename(header.name)),
+            {
+              mode: 0o775,
+            }
+          )
+        );
+      }
+      stream.on('end', () => next());
+      stream.resume();
+    });
+    return new Promise((resolve, reject) => {
+      fs.createReadStream(elasticArchive)
+        .on('error', (err) => {
+          reject('Unable to open tarball ' + elasticArchive + ': ' + err);
+        })
+        .pipe(createUnzip())
+        .on('error', (err) => {
+          reject('Error during unzip for ' + elasticArchive + ': ' + err);
+        })
+        .pipe(extract)
+        .on('error', (err) => {
+          reject('Error during untar for ' + elasticArchive + ': ' + err);
+        })
+        .on('finish', (result) => {
+          console.log(`done extracting tar from ${extractDir}\r`);
+          resolve(result);
+        });
+    });
   }
 }
