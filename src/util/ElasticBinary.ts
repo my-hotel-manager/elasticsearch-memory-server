@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { promisify } from 'util';
 import ElasticBinaryDownloader from './ElasticBinaryDownloader';
+import { locationExists } from './functions';
 
 export default class ElasticBinary {
   version: string;
@@ -45,7 +46,7 @@ export default class ElasticBinary {
       binaryName
     );
 
-    if (await this.locationExists(elasticsearchPath)) {
+    if (await locationExists(elasticsearchPath)) {
       return elasticsearchPath;
     }
 
@@ -58,23 +59,13 @@ export default class ElasticBinary {
       downloadDir
     );
     const elasticArchive = await downloadHandler.download();
-    // await downloadHandler.extract(elasticArchive);
-    // fs.unlinkSync(elasticArchive);
+    await downloadHandler.extract(elasticArchive);
+    fs.unlinkSync(elasticArchive);
 
-    if (await this.locationExists(elasticsearchPath)) {
+    if (await locationExists(elasticsearchPath)) {
       return elasticsearchPath;
     } else {
       throw new Error(`Cannot find binary at path ${elasticsearchPath}`);
-    }
-  }
-
-  async locationExists(loc: string) {
-    try {
-      await promisify(fs.lstat)(loc);
-      return true;
-    } catch (e) {
-      if (e.code !== 'ENOENT') throw e;
-      return false;
     }
   }
 }
