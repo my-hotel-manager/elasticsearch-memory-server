@@ -33,8 +33,10 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@types/dedent": "^0.7.0",
     "camelcase": "^6.0.0",
     "debug": "^4.1.1",
+    "dedent": "^0.7.0",
     "find-cache-dir": "^3.3.1",
     "find-package-json": "^1.2.0"
   }

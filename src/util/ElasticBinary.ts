@@ -8,7 +8,7 @@ export default class ElasticBinary {
   version: string;
 
   constructor(version?: string) {
-    this.version = version || '7.7.2';
+    this.version = version || '7.7.1';
   }
   static async getDownloadPath(): Promise<string> {
     // if we're in postinstall script, npm will set the cwd too deep
@@ -49,9 +49,16 @@ export default class ElasticBinary {
       return elasticsearchPath;
     }
 
-    const downloadHandler = new ElasticBinaryDownloader(this.version);
+    if (!fs.existsSync(downloadDir)) {
+      fs.mkdirSync(downloadDir);
+    }
+
+    const downloadHandler = new ElasticBinaryDownloader(
+      this.version,
+      downloadDir
+    );
     const elasticArchive = await downloadHandler.download();
-    await downloadHandler.extract(elasticArchive);
+    // await downloadHandler.extract(elasticArchive);
     // fs.unlinkSync(elasticArchive);
 
     if (await this.locationExists(elasticsearchPath)) {
