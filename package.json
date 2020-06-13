@@ -2,7 +2,7 @@
   "name": "elasticsearch-memory-server",
   "version": "1.0.0",
   "description": "Local elasticsearch server for testing/development",
-  "main": "index.ts",
+  "main": "src/util/ElasticBinary.ts",
   "repository": "https://github.com/my-hotel-manager/elasticsearch-memory-server",
   "author": "Hotel Manager",
   "license": "MIT",
@@ -18,16 +18,24 @@
     "@babel/node": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-typescript": "^7.10.1",
+    "@types/find-cache-dir": "^3.2.0",
+    "@types/find-package-json": "^1.1.1",
+    "@types/node": "^14.0.13",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.21.2",
     "prettier": "^2.0.5",
     "tsc-watch": "^4.2.8",
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "babel-loader": "^8.1.0",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.21.2"
+    "camelcase": "^6.0.0",
+    "debug": "^4.1.1",
+    "find-cache-dir": "^3.3.1",
+    "find-package-json": "^1.2.0"
   }
 }
