@@ -32,6 +32,11 @@ export default class ElasticBinary {
     return DLPath;
   }
 
+  async getBinaryPath(): Promise<string> {
+    const DLPath = await ElasticBinary.getDownloadPath();
+    return path.resolve(DLPath, `elasticsearch-${this.version}`);
+  }
+
   /**
    * Get path of already downloaded binary path. Else, download
    * and return path
@@ -39,12 +44,7 @@ export default class ElasticBinary {
   async getElasticsearchPath(): Promise<string> {
     const downloadDir = await ElasticBinary.getDownloadPath();
     const binaryName = 'elasticsearch';
-    const elasticsearchPath = path.resolve(
-      downloadDir,
-      `elasticsearch-${this.version}`,
-      'bin',
-      binaryName
-    );
+    const elasticsearchPath = await this.getBinaryPath();
 
     if (await locationExists(elasticsearchPath)) {
       return elasticsearchPath;

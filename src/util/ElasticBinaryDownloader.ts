@@ -2,7 +2,7 @@ import fs from 'fs';
 import url from 'url';
 import https from 'https';
 import path from 'path';
-import tar from 'tar-stream';
+import tar from 'tar-fs';
 import { createUnzip } from 'zlib';
 import dedent from 'dedent';
 import { promisify } from 'util';
@@ -187,7 +187,7 @@ export default class ElasticBinaryDownloader {
    */
   async extract(elasticArchive: string): Promise<string> {
     const binaryName = 'elasticsearch';
-    const extractDir = path.resolve(this.downloadDir, this.version);
+    const extractDir = path.resolve(this.downloadDir);
 
     if (!fs.existsSync(extractDir)) {
       fs.mkdirSync(extractDir);
@@ -195,7 +195,8 @@ export default class ElasticBinaryDownloader {
 
     // TODO: Fix the filter
     let filter: (file: string) => boolean;
-    filter = (file: string) => /bin\/elasticsearch$/.test(file);
+    // filter = (file: string) => /bin\/elasticsearch$/.test(file);
+    filter = (file: string) => true;
 
     // TODO: Fix checking of multipart .tar.gz extensions
     if (/(.gz|.tgz)$/.test(path.extname(elasticArchive))) {
@@ -212,11 +213,16 @@ export default class ElasticBinaryDownloader {
 
     if (
       !(await locationExists(
-        path.resolve(this.downloadDir, this.version, 'bin', binaryName)
+        path.resolve(
+          this.downloadDir,
+          `elasticsearch-${this.version}`,
+          'bin',
+          binaryName
+        )
       ))
     ) {
       throw new Error(
-        `ElasticBinaryDownload: missing mongod binary in ${path.resolve(
+        `ElasticBinaryDownload: missing elastic binary in ${path.resolve(
           this.downloadDir,
           this.version,
           binaryName
@@ -238,23 +244,7 @@ export default class ElasticBinaryDownloader {
     elasticArchive: string,
     extractDir: string,
     filter: (file: string) => boolean
-  ): Promise<void> {
-    const extract = tar.extract();
-    extract.on('entry', (header, stream, next) => {
-      if (filter(header.name)) {
-        console.log(header.name);
-        stream.pipe(
-          fs.createWriteStream(
-            path.resolve(extractDir, path.basename(header.name)),
-            {
-              mode: 0o775,
-            }
-          )
-        );
-      }
-      stream.on('end', () => next());
-      stream.resume();
-    });
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       fs.createReadStream(elasticArchive)
         .on('error', (err) => {
@@ -264,12 +254,12 @@ export default class ElasticBinaryDownloader {
         .on('error', (err) => {
           reject('Error during unzip for ' + elasticArchive + ': ' + err);
         })
-        .pipe(extract)
-        .on('error', (err) => {
+        .pipe(tar.extract(extractDir))
+        .on('error', (err: Error) => {
           reject('Error during untar for ' + elasticArchive + ': ' + err);
         })
-        .on('finish', (result) => {
-          console.log(`done extracting tar from ${extractDir}\r`);
+        .on('finish', (result: string) => {
+          console.log(`done extracting tar from ${elasticArchive}\r`);
           resolve(result);
         });
     });
