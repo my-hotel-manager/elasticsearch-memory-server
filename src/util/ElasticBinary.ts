@@ -5,13 +5,15 @@ import { promisify } from 'util';
 import ElasticBinaryDownloader from './ElasticBinaryDownloader';
 import { locationExists } from './functions';
 
+const LATEST_VERSION = '7.7.1';
+
 export default class ElasticBinary {
   version: string;
 
   constructor(version?: string) {
-    this.version = version || '7.7.1';
+    this.version = version || LATEST_VERSION;
   }
-  static async getDownloadPath(): Promise<string> {
+  static getDownloadPath(): string {
     // if we're in postinstall script, npm will set the cwd too deep
     let nodeModulesDLDir = process.cwd();
     while (
@@ -32,19 +34,19 @@ export default class ElasticBinary {
     return DLPath;
   }
 
-  async getBinaryPath(): Promise<string> {
-    const DLPath = await ElasticBinary.getDownloadPath();
-    return path.resolve(DLPath, `elasticsearch-${this.version}`);
-  }
-
   /**
    * Get path of already downloaded binary path. Else, download
    * and return path
    */
   async getElasticsearchPath(): Promise<string> {
-    const downloadDir = await ElasticBinary.getDownloadPath();
+    const downloadDir = ElasticBinary.getDownloadPath();
     const binaryName = 'elasticsearch';
-    const elasticsearchPath = await this.getBinaryPath();
+    const elasticsearchPath = path.resolve(
+      downloadDir,
+      `elasticsearch-${this.version}`,
+      'bin',
+      binaryName
+    );
 
     if (await locationExists(elasticsearchPath)) {
       return elasticsearchPath;
@@ -58,6 +60,7 @@ export default class ElasticBinary {
       this.version,
       downloadDir
     );
+    // TODO: Add lockfile for safety
     const elasticArchive = await downloadHandler.download();
     await downloadHandler.extract(elasticArchive);
     fs.unlinkSync(elasticArchive);
