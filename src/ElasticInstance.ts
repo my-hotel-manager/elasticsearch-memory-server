@@ -45,7 +45,6 @@ export default class ElasticInstance {
 
     const binaryHandler = new ElasticBinary();
     const elasticBin = await binaryHandler.getElasticsearchPath();
-    console.log(elasticBin);
     this.childProcess = this._launchElasticsearch(elasticBin);
     // this.killerProcess = this._launchKiller(process.pid, this.childProcess.pid);
 
