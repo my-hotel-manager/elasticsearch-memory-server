@@ -1,6 +1,3 @@
-import ElasticBinary from 'util/ElasticBinary';
+import ElasticMemoryServer from 'ElasticMemoryServer';
 
-const bin = new ElasticBinary();
-bin.getElasticsearchPath().then((dir) => {
-  console.log(dir);
-});
+const server = new ElasticMemoryServer();
