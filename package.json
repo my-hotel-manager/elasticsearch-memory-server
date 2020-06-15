@@ -1,17 +1,27 @@
 {
   "name": "elasticsearch-memory-server",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Local elasticsearch server for testing/development",
-  "main": "src/util/ElasticBinary.ts",
+  "main": "index.ts",
   "repository": "https://github.com/my-hotel-manager/elasticsearch-memory-server",
   "author": "Hotel Manager",
   "license": "MIT",
-  "engines": {
-    "node": "12"
-  },
   "scripts": {
     "dev": "tsc-watch --onSuccess 'babel-node --extensions '.ts,.js' index.ts'",
     "test": "jest"
+  },
+  "dependencies": {
+    "@types/dedent": "^0.7.0",
+    "@types/tar-fs": "^2.0.0",
+    "camelcase": "^6.0.0",
+    "cross-spawn": "^7.0.3",
+    "debug": "^4.1.1",
+    "dedent": "^0.7.0",
+    "find-cache-dir": "^3.3.1",
+    "find-package-json": "^1.2.0",
+    "get-port": "^5.1.1",
+    "tar-fs": "^2.1.0",
+    "tmp": "^0.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -36,18 +46,5 @@
     "prettier": "^2.0.5",
     "tsc-watch": "^4.2.8",
     "typescript": "^3.9.5"
-  },
-  "dependencies": {
-    "@types/dedent": "^0.7.0",
-    "@types/tar-fs": "^2.0.0",
-    "camelcase": "^6.0.0",
-    "cross-spawn": "^7.0.3",
-    "debug": "^4.1.1",
-    "dedent": "^0.7.0",
-    "find-cache-dir": "^3.3.1",
-    "find-package-json": "^1.2.0",
-    "get-port": "^5.1.1",
-    "tar-fs": "^2.1.0",
-    "tmp": "^0.2.1"
   }
 }
