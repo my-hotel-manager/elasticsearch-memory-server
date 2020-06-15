@@ -1,9 +1,7 @@
 import ElasticInstance, { ElasticInstanceOpts } from './ElasticInstance';
 import tmp from 'tmp';
-import ElasticBinaryDownloader from 'util/ElasticBinaryDownloader';
 import { ChildProcess } from 'child_process';
 import getPort from 'get-port';
-import { getPriority } from 'os';
 
 export interface ElasticServerOpts {
   instance?: ElasticInstanceOpts;
