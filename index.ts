@@ -1,3 +1,10 @@
 import ElasticMemoryServer from 'ElasticMemoryServer';
 
-const server = new ElasticMemoryServer();
+const main = async () => {
+  console.log(Date.now());
+  const server = new ElasticMemoryServer();
+  await server.getUri();
+  console.log(server.instanceInfoSync);
+};
+
+main();

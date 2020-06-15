@@ -7,6 +7,7 @@ export interface ElasticInstanceOpts {
   port?: number;
   ip?: string;
   dbPath?: string;
+  tmpDir?: tmp.DirResult;
   args?: string[];
   binary?: string;
 }
@@ -28,27 +29,30 @@ export default class ElasticInstance {
 
   static async run(opts: ElasticInstanceOpts): Promise<ElasticInstance> {
     const instance = new this(opts);
-    return instance.run();
+    return await instance.run();
   }
 
   async run(): Promise<this> {
-    const launch = new Promise((resolve, reject) => {
-      this.instanceReady = () => {
-        this.isInstanceReady = true;
-        resolve({ ...this.childProcess });
-      };
-      this.instanceFailed = (err: any) => {
-        if (this.killerProcess) this.killerProcess.kill();
-        reject(err);
-      };
-    });
+    const launch = () => {
+      return new Promise((resolve, reject) => {
+        this.instanceReady = () => {
+          this.isInstanceReady = true;
+          resolve({ ...this.childProcess });
+        };
+        this.instanceFailed = (err: any) => {
+          if (this.killerProcess) this.killerProcess.kill();
+          reject(err);
+        };
+      });
+    };
 
     const binaryHandler = new ElasticBinary();
     const elasticBin = await binaryHandler.getElasticsearchPath();
     this.childProcess = this._launchElasticsearch(elasticBin);
     // this.killerProcess = this._launchKiller(process.pid, this.childProcess.pid);
 
-    await launch;
+    // TODO: HELP
+    // launch();
     return this;
   }
 
@@ -99,6 +103,6 @@ export default class ElasticInstance {
   }
 
   stdoutHandler(message: string | Buffer): void {
-    console.log(`ElasticInstance: ${message.toString()}`);
+    // console.log(`ElasticInstance: ${message.toString()}`);
   }
 }
