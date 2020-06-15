@@ -81,7 +81,7 @@ export default class ElasticMemoryServer {
 
     const instanceInfo: ElasticInstanceInfo = {
       dbPath: data.dbPath,
-      uri: `https://${data.ip}:${data.port}`,
+      uri: `http://${data.ip}:${data.port}`,
       instance,
     };
     return instanceInfo;
