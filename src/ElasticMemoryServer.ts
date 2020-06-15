@@ -39,7 +39,6 @@ export default class ElasticMemoryServer {
   }
 
   async ensureInstance(): Promise<ElasticInstanceInfo> {
-    console.log(`${await this.runningInstance}`);
     if (this.runningInstance) {
       return this.runningInstance;
     } else {
@@ -73,19 +72,18 @@ export default class ElasticMemoryServer {
       });
       data.dbPath = data.tmpDir.name;
     }
-    console.log('got here');
+
     const instance = await ElasticInstance.run({
       port: data.port,
       ip: data.ip,
       dbPath: data.dbPath,
     });
-    console.log('also got here?');
+
     const instanceInfo: ElasticInstanceInfo = {
       dbPath: data.dbPath,
       uri: `https://${data.ip}:${data.port}`,
       instance,
     };
-    console.log(`here: ${instanceInfo}`);
     return instanceInfo;
   }
 }
