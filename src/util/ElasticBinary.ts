@@ -1,7 +1,6 @@
 import findCacheDir from 'find-cache-dir';
 import path from 'path';
 import fs from 'fs';
-import { promisify } from 'util';
 import ElasticBinaryDownloader from './ElasticBinaryDownloader';
 import { locationExists } from './functions';
 

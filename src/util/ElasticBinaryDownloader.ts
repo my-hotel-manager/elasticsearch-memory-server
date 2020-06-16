@@ -4,10 +4,8 @@ import https from 'https';
 import path from 'path';
 import tar from 'tar-fs';
 import { createUnzip } from 'zlib';
-import dedent from 'dedent';
 import { promisify } from 'util';
 import { locationExists } from './functions';
-// import { HttpsProxyAgent } from 'https-proxy-agent';
 
 interface HttpDownloadOptions {
   hostname: string;
