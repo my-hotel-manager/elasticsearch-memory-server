@@ -11,7 +11,7 @@ export interface ElasticInstanceInfo extends ElasticInstanceOpts {
   dbPath: string | undefined;
   uri: string;
   instance: ElasticInstance;
-  childProcess?: ChildProcess;
+  // childProcess?: ChildProcess;
 }
 
 export default class ElasticMemoryServer {

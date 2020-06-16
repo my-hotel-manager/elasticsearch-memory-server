@@ -56,16 +56,16 @@ export default class ElasticInstance {
 
   parseCmdArgs(): string[] {
     const { port, ip, dbPath, args } = this.opts;
-    const result: string[] = [];
+    const result: Array<string[]> = [];
 
-    if (ip) result.push(`network.host=${ip}`);
-    if (port) result.push(`http.port=${port}`);
+    if (ip) result.push(['-E', `network.host=${ip}`]);
+    if (port) result.push(['-E', `http.port=${port}`]);
     if (dbPath) {
-      result.push(`path.data=${path.resolve(dbPath, 'path')}`);
-      result.push(`path.logs=${path.resolve(dbPath, 'logs')}`);
+      result.push(['-E', `path.data=${path.resolve(dbPath, 'path')}`]);
+      result.push(['-E', `path.logs=${path.resolve(dbPath, 'logs')}`]);
     }
     if (args) result.concat(args);
-    return result;
+    return result.flat();
   }
 
   /**
@@ -77,9 +77,7 @@ export default class ElasticInstance {
       stdio: 'pipe',
     };
 
-    const cmdArgs = this.parseCmdArgs().map((el) => `-E ${el}`);
-    console.log(cmdArgs);
-    const childProcess = spawnChild(elasticBin, cmdArgs);
+    const childProcess = spawnChild(elasticBin, this.parseCmdArgs());
 
     if (childProcess.stderr) {
       childProcess.stderr.on('data', this.stderrHandler.bind(this));
