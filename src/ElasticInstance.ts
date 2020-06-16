@@ -65,6 +65,7 @@ export default class ElasticInstance {
       result.push(`path.logs=${path.resolve(dbPath, 'logs')}`);
     }
     if (args) result.concat(args);
+    result.map((el) => `-E ${el}`);
     return result;
   }
 
@@ -77,9 +78,7 @@ export default class ElasticInstance {
       stdio: 'pipe',
     };
 
-    const cmdArgs = this.parseCmdArgs().map((el) => `-E ${el}`);
-    console.log(cmdArgs);
-    const childProcess = spawnChild(elasticBin, cmdArgs);
+    const childProcess = spawnChild(elasticBin, this.parseCmdArgs());
 
     if (childProcess.stderr) {
       childProcess.stderr.on('data', this.stderrHandler.bind(this));
