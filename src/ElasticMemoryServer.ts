@@ -1,7 +1,9 @@
 import ElasticInstance, { ElasticInstanceOpts } from './ElasticInstance';
 import tmp from 'tmp';
+import ElasticBinaryDownloader from 'util/ElasticBinaryDownloader';
 import { ChildProcess } from 'child_process';
 import getPort from 'get-port';
+import { getPriority } from 'os';
 
 export interface ElasticServerOpts {
   instance?: ElasticInstanceOpts;
@@ -79,7 +81,7 @@ export default class ElasticMemoryServer {
 
     const instanceInfo: ElasticInstanceInfo = {
       dbPath: data.dbPath,
-      uri: `http://${data.ip}:${data.port}`,
+      uri: `https://${data.ip}:${data.port}`,
       instance,
     };
     return instanceInfo;

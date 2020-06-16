@@ -11,7 +11,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "typeRoots": ["./node_modules/@types", "src/typings/*.d.ts"]
   },
   "include": ["src", "./index.ts"]
 }

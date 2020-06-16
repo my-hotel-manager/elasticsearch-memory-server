@@ -1,22 +1,16 @@
 {
   "name": "elasticsearch-memory-server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Local elasticsearch server for testing/development",
-  "main": "index.ts",
+  "main": "src/util/ElasticBinary.ts",
   "repository": "https://github.com/my-hotel-manager/elasticsearch-memory-server",
   "author": "Hotel Manager",
   "license": "MIT",
-  "scripts": {
-    "test": "jest"
+  "engines": {
+    "node": "12"
   },
-  "dependencies": {
-    "@types/tar-fs": "^2.0.0",
-    "cross-spawn": "^7.0.3",
-    "find-cache-dir": "^3.3.1",
-    "find-package-json": "^1.2.0",
-    "get-port": "^5.1.1",
-    "tar-fs": "^2.1.0",
-    "tmp": "^0.2.1"
+  "scripts": {
+    "dev": "tsc-watch --onSuccess 'babel-node --extensions '.ts,.js' index.ts'"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -27,7 +21,6 @@
     "@types/cross-spawn": "^6.0.2",
     "@types/find-cache-dir": "^3.2.0",
     "@types/find-package-json": "^1.1.1",
-    "@types/jest": "^26.0.0",
     "@types/node": "^14.0.13",
     "@types/tmp": "^0.2.0",
     "babel-eslint": "^10.1.0",
@@ -37,9 +30,21 @@
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
-    "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "tsc-watch": "^4.2.8",
     "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "@types/dedent": "^0.7.0",
+    "@types/tar-fs": "^2.0.0",
+    "camelcase": "^6.0.0",
+    "cross-spawn": "^7.0.3",
+    "debug": "^4.1.1",
+    "dedent": "^0.7.0",
+    "find-cache-dir": "^3.3.1",
+    "find-package-json": "^1.2.0",
+    "get-port": "^5.1.1",
+    "tar-fs": "^2.1.0",
+    "tmp": "^0.2.1"
   }
 }

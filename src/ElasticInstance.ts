@@ -53,10 +53,6 @@ export default class ElasticInstance {
     return this;
   }
 
-  prepareCommandArgs() {
-    return ['-E', `http.port=${this.opts.port}`];
-  }
-
   /**
    * Actually launch elasticsearch
    * @param elasticBin The binary to run
@@ -67,8 +63,8 @@ export default class ElasticInstance {
     };
 
     const childProcess = spawnChild(
-      elasticBin,
-      this.prepareCommandArgs()
+      elasticBin
+      // // this.prepareCommandArgs(),
       // spawnOpts
     );
 

@@ -1,3 +1,9 @@
 import ElasticMemoryServer from 'ElasticMemoryServer';
 
-export default ElasticMemoryServer;
+const main = async () => {
+  const server = new ElasticMemoryServer();
+  await server.getUri();
+  console.log(server.instanceInfoSync);
+};
+
+main();
