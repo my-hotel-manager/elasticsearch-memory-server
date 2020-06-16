@@ -2,6 +2,7 @@ import tmp from 'tmp';
 import { ChildProcess, SpawnOptions } from 'child_process';
 import spawnChild from 'cross-spawn';
 import ElasticBinary from 'util/ElasticBinary';
+import path from 'path';
 
 export interface ElasticInstanceOpts {
   port?: number;
@@ -53,8 +54,19 @@ export default class ElasticInstance {
     return this;
   }
 
-  prepareCommandArgs() {
-    return ['-E', `http.port=${this.opts.port}`];
+  parseCmdArgs(): string[] {
+    const { port, ip, dbPath, args } = this.opts;
+    const result: string[] = [];
+
+    if (ip) result.push(`network.host=${ip}`);
+    if (port) result.push(`http.port=${port}`);
+    if (dbPath) {
+      result.push(`path.data=${path.resolve(dbPath, 'path')}`);
+      result.push(`path.logs=${path.resolve(dbPath, 'logs')}`);
+    }
+    if (args) result.concat(args);
+    result.map((el) => `-E ${el}`);
+    return result;
   }
 
   /**
@@ -66,11 +78,7 @@ export default class ElasticInstance {
       stdio: 'pipe',
     };
 
-    const childProcess = spawnChild(
-      elasticBin,
-      this.prepareCommandArgs()
-      // spawnOpts
-    );
+    const childProcess = spawnChild(elasticBin, this.parseCmdArgs());
 
     if (childProcess.stderr) {
       childProcess.stderr.on('data', this.stderrHandler.bind(this));
