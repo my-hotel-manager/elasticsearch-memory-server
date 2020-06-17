@@ -9,15 +9,15 @@
     "declaration": true,
     "declarationMap": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "lib": ["esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node", "jest"],
+    "types": ["node"],
     "baseUrl": ".",
     "paths": { "*": ["src/*"] }
   },
   "include": ["src/**/*", "index.ts"],
-  "exclude": ["**/__tests__"]
+  "exclude": ["__tests__", "node_modules"]
 }
