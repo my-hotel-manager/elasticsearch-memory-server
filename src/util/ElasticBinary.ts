@@ -52,7 +52,7 @@ export default class ElasticBinary {
     }
 
     if (!fs.existsSync(downloadDir)) {
-      fs.mkdirSync(downloadDir);
+      fs.mkdirSync(downloadDir, {recursive: true});
     }
 
     const downloadHandler = new ElasticBinaryDownloader(
