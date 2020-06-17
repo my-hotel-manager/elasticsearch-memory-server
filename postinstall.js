@@ -6,7 +6,7 @@ function isModuleExists(name) {
     }
   }
 
-const elasticBinaryModule = './lib/util/ElasticBinary';
+const elasticBinaryModule = './lib/src/util/ElasticBinary';
 if (isModuleExists(elasticBinaryModule)) {
   const ElasticBinary = require(elasticBinaryModule).default;
   const binaryHandler = new ElasticBinary();
