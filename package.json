@@ -2,7 +2,7 @@
   "name": "elasticsearch-memory-server",
   "version": "0.1.4",
   "description": "Local elasticsearch server for testing/development. Inspired by https://github.com/nodkz/mongodb-memory-server",
-  "main": "index.ts",
+  "main": "lib/index.js",
   "repository": "https://github.com/my-hotel-manager/elasticsearch-memory-server",
   "author": "Hotel Manager",
   "license": "MIT",
@@ -19,7 +19,8 @@
     "find-package-json": "^1.2.0",
     "get-port": "^5.1.1",
     "tar-fs": "^2.1.0",
-    "tmp": "^0.2.1"
+    "tmp": "^0.2.1",
+    "typescript": "^3.9.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -42,7 +43,6 @@
     "eslint-plugin-import": "^2.21.2",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
-    "tsc-watch": "^4.2.8",
-    "typescript": "^3.9.5"
+    "tsc-watch": "^4.2.8"
   }
 }
