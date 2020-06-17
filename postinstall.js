@@ -6,12 +6,13 @@ function isModuleExists(name) {
     }
   }
 
-const elasticBinaryModule = './src/util/ElasticBinary.ts';
+const elasticBinaryModule = './lib/util/ElasticBinary';
 if (isModuleExists(elasticBinaryModule)) {
-  const MongoBinary = require(elasticBinaryModule).default;
+  const ElasticBinary = require(elasticBinaryModule).default;
+  const binaryHandler = new ElasticBinary();
 
   console.log('elasticsearch-memory-server: checking Elasticsearch binaries cache...');
-  ElasticBinary.getPath({})
+  binaryHandler.getElasticsearchPath()
     .then((binPath) => {
       console.log(`elasticsearch-memory-server: binary path is ${binPath}`);
     })
