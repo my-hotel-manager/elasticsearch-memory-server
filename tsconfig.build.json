@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./lib",
+      "noEmit": false,
+      "target": "esnext",
+      "module": "commonjs",
+      "sourceMap": true,
+      "declaration": true,
+      "declarationMap": true,
+      "skipLibCheck": false,
+      "strict": true,
+      "lib": ["esnext"],
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "types": ["node", "jest"],
+      "baseUrl": ".",
+      "paths": {"*": [
+          "src/*"
+      ]}
+    },
+    "include": ["src/**/*"],
+    "exclude": ["**/__tests__"]
+  }
