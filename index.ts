@@ -1,3 +1,3 @@
-import ElasticMemoryServer from 'ElasticMemoryServer';
+import ElasticMemoryServer from './src/ElasticMemoryServer';
 
 export default ElasticMemoryServer;

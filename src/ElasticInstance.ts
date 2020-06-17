@@ -1,7 +1,7 @@
 import tmp from 'tmp';
 import { ChildProcess, SpawnOptions } from 'child_process';
 import spawnChild from 'cross-spawn';
-import ElasticBinary from 'util/ElasticBinary';
+import ElasticBinary from './util/ElasticBinary';
 import path from 'path';
 
 export interface ElasticInstanceOpts {
