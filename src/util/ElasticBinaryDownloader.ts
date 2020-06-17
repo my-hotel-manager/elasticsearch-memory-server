@@ -204,7 +204,7 @@ export default class ElasticBinaryDownloader {
         `ElasticBinaryDownload: unsupported archive ext ${path.extname(
           elasticArchive
         )} (downloaded from ${
-          this._downloadingUrl ?? 'unkown'
+          this._downloadingUrl || 'unkown'
         }). Broken archive from elasticsearch provider?`
       );
     }
@@ -225,7 +225,7 @@ export default class ElasticBinaryDownloader {
           this.version,
           binaryName
         )} (downloaded from ${
-          this._downloadingUrl ?? 'unkown'
+          this._downloadingUrl || 'unkown'
         }). Broken archive from elasticsearch Provider?`
       );
     }
