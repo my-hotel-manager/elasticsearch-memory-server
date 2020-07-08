@@ -43,7 +43,18 @@ export default class ElasticBinaryDownloader {
   }
 
   getArchiveName(version: string): string {
-    return `elasticsearch-${version}-linux-x86_64.tar.gz`;
+    // TODO: Add Windows support (unzipping)
+
+    switch (process.platform) {
+      case 'darwin':
+        return `elasticsearch-${version}-darwin-x86_64.tar.gz`;
+      case 'linux':
+        return `elasticsearch-${version}-linux-x86_64.tar.gz`;
+      case 'win32':
+        return `elasticsearch-${version}-windows-x86_64.zip`;
+      default:
+        return `elasticsearch-${version}-linux-x86_64.tar.gz`;
+    }
   }
 
   getDownloadUrl(version: string): string {
