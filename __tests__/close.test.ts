@@ -3,10 +3,10 @@ import ElasticMemoryServer from '../index';
 import axios from 'axios';
 
 it('closes', async () => {
-  const elasticd = new ElasticMemoryServer();
-  const uri = await elasticd.getUri();
+  const elasticServer = new ElasticMemoryServer();
+  const uri = await elasticServer.getUri();
 
-  await elasticd.stop();
+  await elasticServer.stop();
 
   try {
     await axios.get(uri);

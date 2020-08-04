@@ -3,8 +3,8 @@ import ElasticMemoryServer from '../index';
 import axios from 'axios';
 
 it('opens', async () => {
-  const elasticd = new ElasticMemoryServer({ instance: { port: 3131 } });
-  const uri = await elasticd.getUri();
+  const elasticServer = new ElasticMemoryServer({ instance: { port: 3131 } });
+  const uri = await elasticServer.getUri();
 
   const response = await axios.get(uri);
 
@@ -15,5 +15,5 @@ it('opens', async () => {
     version: expect.any(Object),
   });
 
-  await elasticd.stop();
+  await elasticServer.stop();
 });
