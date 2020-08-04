@@ -1,6 +1,5 @@
 import ElasticInstance, { ElasticInstanceOpts } from './ElasticInstance';
 import tmp from 'tmp';
-import { ChildProcess } from 'child_process';
 import getPort from 'get-port';
 
 export interface ElasticServerOpts {
@@ -83,5 +82,29 @@ export default class ElasticMemoryServer {
       instance,
     };
     return instanceInfo;
+  }
+
+  async stop(): Promise<boolean> {
+    // just return "true" if the instance is already running / defined
+    if (this.runningInstance === null || this.runningInstance === undefined) {
+      return true;
+    }
+
+    const {
+      instance,
+      port,
+      tmpDir,
+    }: ElasticInstanceInfo = await this.ensureInstance();
+
+    await instance.kill();
+
+    this.runningInstance = null;
+    this.instanceInfoSync = null;
+
+    if (tmpDir) {
+      tmpDir.removeCallback();
+    }
+
+    return true;
   }
 }

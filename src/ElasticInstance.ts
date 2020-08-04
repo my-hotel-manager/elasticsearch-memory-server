@@ -54,6 +54,32 @@ export default class ElasticInstance {
     return this;
   }
 
+  async kill(): Promise<ElasticInstance> {
+    if (this.childProcess && !this.childProcess.killed) {
+      await new Promise((resolve) => {
+        if (this.childProcess) {
+          this.childProcess.once(`exit`, () => {
+            resolve();
+          });
+          this.childProcess.kill();
+        }
+      });
+    } else {
+    }
+    if (this.killerProcess && !this.killerProcess.killed) {
+      await new Promise((resolve) => {
+        if (this.killerProcess) {
+          this.killerProcess.once(`exit`, () => {
+            resolve();
+          });
+          this.killerProcess.kill();
+        }
+      });
+    } else {
+    }
+    return this;
+  }
+
   parseCmdArgs(): string[] {
     const { port, ip, dbPath, args } = this.opts;
     const result: Array<string[]> = [];

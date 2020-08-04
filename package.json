@@ -7,7 +7,7 @@
   "author": "Hotel Manager",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "jest --env=node",
     "build": "tsc -p ./tsconfig.build.json",
     "postinstall": "yarn build && node ./postinstall.js",
     "install": "yarn build && node ./postinstall.js"
@@ -34,6 +34,7 @@
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.13",
     "@types/tmp": "^0.2.0",
+    "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
