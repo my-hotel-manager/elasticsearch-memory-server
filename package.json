@@ -1,6 +1,6 @@
 {
   "name": "elasticsearch-memory-server",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "Local elasticsearch server for testing/development. Inspired by https://github.com/nodkz/mongodb-memory-server",
   "main": "lib/index.js",
   "repository": "https://github.com/my-hotel-manager/elasticsearch-memory-server",
